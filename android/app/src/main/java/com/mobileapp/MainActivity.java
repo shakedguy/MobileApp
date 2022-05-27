@@ -1,4 +1,4 @@
-package com.mobileapp;
+package com.loginapp.appname;
 
 import android.os.Build;
 import android.os.Bundle;

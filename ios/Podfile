@@ -33,6 +33,8 @@ target 'MobileApp' do
   #   use_flipper!()
   # end
 
+
+
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
@@ -46,4 +48,10 @@ target 'MobileApp' do
     end
   end
 
+pod 'Firebase/Analytics'
+pod 'FirebaseUI'
+pod 'FirebaseUI/Auth'
+pod 'FirebaseUI/Google'
+pod 'FirebaseUI/OAuth' # Used for Sign in with Apple, Twitter, etc
+pod 'FirebaseUI/Phone'
 end
