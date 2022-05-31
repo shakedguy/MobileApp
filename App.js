@@ -6,13 +6,14 @@ import analytics from '@react-native-firebase/analytics';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import LogoutScreen from './screens/LogoutScreen';
 import UsersScreen from './screens/UsersScreen';
 import { useAuth } from './contexts/AuthContext';
 
 const Drawer = createDrawerNavigator();
 
 const MyDrawer = () => {
-	const { isLoggedIn } = useAuth();
+	const { isLoggedIn, currentUser } = useAuth();
 
 	return (
 		<Drawer.Navigator
@@ -23,7 +24,10 @@ const MyDrawer = () => {
 			}}>
 			{!isLoggedIn && <Drawer.Screen name='HomeScreen' component={HomeScreen} options={{ title: 'Home' }} />}
 			{isLoggedIn && <Drawer.Screen name='ProfileScreen' component={ProfileScreen} options={{ title: 'Profile' }} />}
-			{isLoggedIn && <Drawer.Screen name='UsersScreen' component={UsersScreen} options={{ title: 'Users' }} />}
+			{isLoggedIn && currentUser && currentUser.Admin && (
+				<Drawer.Screen name='UsersScreen' component={UsersScreen} options={{ title: 'Users' }} />
+			)}
+			{isLoggedIn && <Drawer.Screen name='LogoutScreen' component={LogoutScreen} options={{ title: 'Logout' }} />}
 		</Drawer.Navigator>
 	);
 };

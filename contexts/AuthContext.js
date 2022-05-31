@@ -5,6 +5,30 @@ import Auth from 'react-native-firebaseui-auth';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import analytics from '@react-native-firebase/analytics';
+import axios from 'axios';
+
+const verifyTokenWithBackend = async (idToken) => {
+	try {
+		const response = await axios.post(
+			'https://www.socialloginproject.com/mobile/login',
+			{ idToken },
+			{
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		if (response.status === 200 || response.status === 201) {
+			return response.data;
+		} else {
+			return null;
+		}
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+};
 
 const AuthContext = createContext({
 	currentUser: null,
@@ -30,18 +54,24 @@ const config = {
 
 const AuthContextProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState('');
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const navigator = useNavigation();
 
 	const onAuthStateChanged = async (userCredentials) => {
 		if (userCredentials) {
-			const user = User.fromFirebase(userCredentials);
+			const idToken = await userCredentials.getIdToken();
+			const user = await verifyTokenWithBackend(idToken);
+			setIsLoggedIn(true);
 			setCurrentUser(user);
-			await analytics().logEvent('profile_view', { id: '123' });
 			navigator.navigate('ProfileScreen');
 		} else {
 			setCurrentUser(null);
-			navigator.navigate('HomeScreen');
+			const loggedOut =
+				navigator.getState() !== undefined &&
+				navigator.getState().history !== undefined &&
+				navigator.getState().history !== null;
+			navigator.navigate('HomeScreen', { loggedOut });
 		}
 	};
 
@@ -59,6 +89,7 @@ const AuthContextProvider = ({ children }) => {
 
 	const logout = async () => {
 		setIsLoading(true);
+		setIsLoggedIn(false);
 		await Auth.signOut();
 		console.log('logged out');
 		setIsLoading(false);
@@ -68,7 +99,7 @@ const AuthContextProvider = ({ children }) => {
 
 	const value = {
 		currentUser,
-		isLoggedIn: currentUser !== null,
+		isLoggedIn,
 		isLoading,
 		login,
 		logout,

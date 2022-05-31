@@ -57,7 +57,7 @@ const User = class {
 	// "providerID": "Firebase", "uid": "mRwQLrRwkAWgD58P6JDakoDfZGC2"
 
 	static fromFirebase(user) {
-		console.log('User.fromFirebase (line 62)', user);
+		// console.log('User.fromFirebase (line 62)', user);
 
 		const providerData = user.providerData.find((obj) => obj.hasOwnProperty('providerId'));
 		const name = providerData.displayName || 'undefined';
@@ -67,7 +67,7 @@ const User = class {
 		const provider = providerData ? providerData.providerId : 'undefined';
 		const metadata = user.metadata || 'undefined';
 		const admin = user.isNewUser || false;
-		console.log('User.fromFirebase (line 72)', provider);
+		// console.log('User.fromFirebase (line 72)', provider);
 		return new User(user.uid, name, email, phoneNumber, photoURL, provider, metadata, admin);
 	}
 

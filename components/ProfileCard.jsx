@@ -33,7 +33,8 @@ const ProfileCard = ({ user }) => {
 							{ key: 'Phone: ', data: user.Phone || 'undefined' },
 							{ key: 'Creation Time: ', data: user.CreationTime || 'undefined' },
 							{ key: 'Last Login: ', data: user.LastLogin || 'undefined' },
-							{ key: 'provider: ', data: user.Provider || 'undefined' },
+							{ key: 'Provider: ', data: user.Provider || 'undefined' },
+							{ key: 'Admin: ', data: `${user.Admin}` || 'false' },
 							{ key: 'PhotoURL: ', data: user.PhotoURL || 'undefined' },
 						]}
 						renderItem={({ item }) => <ListItem label={item.key} data={item.data} />}
@@ -52,6 +53,10 @@ const styles = StyleSheet.create({
 		marginTop: 50,
 		minWidth: 300,
 		maxHeight: 400,
+		shadowRadius: 20,
+		shadowOpacity: 0.3,
+		shadowOffset: { width: 10, height: 10 },
+		shadowColor: '#000',
 	},
 	title: {
 		fontSize: 14,
