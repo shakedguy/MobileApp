@@ -25,7 +25,7 @@ const HomeScreen = ({ route }) => {
 							Goodbye 👋🙃
 						</Snackbar>
 					</View>
-					<Title style={styles.title}>Hello, Welcome to Social Login App</Title>
+					<Title style={styles.title}>Hello, Welcome to MobileApp App</Title>
 				</View>
 				<View style={styles.downsideContainer}>
 					<View style={styles.emptyBox} />
